@@ -11,7 +11,7 @@
 
 namespace Greeflas\StaticAnalyzer\Command;
 
-use Greeflas\StaticAnalyzer\Analyzer\ClassPropMethCount;
+use Greeflas\StaticAnalyzer\Analyzer\ClassSignatureAnalyzer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,11 +22,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  *
  * Class ClassPropertiesMethodsStat
+ *
  * @author dozer111 <alkhonko@gmail.com>
  */
 class ClassPropertiesMethodsStat extends Command
 {
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this->setName('stat:class-md-count')
@@ -41,15 +45,17 @@ class ClassPropertiesMethodsStat extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void|null
+     *
      * @throws \ReflectionException
+     *
+     * @return null|int|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fullClassName = $input->getArgument('fullClassName');
 
 
-        $reflectionAnalyzer = new ClassPropMethCount($fullClassName);
+        $reflectionAnalyzer = new ClassSignatureAnalyzer($fullClassName);
         $result = $reflectionAnalyzer->showPropMeth();
 
 

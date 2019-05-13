@@ -1,36 +1,41 @@
 <?php
 
+/*
+ * This file is part of the "PHP Static Analyzer" project.
+ *
+ * (c) Vladimir Kuprienko <vldmr.kuprienko@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Greeflas\StaticAnalyzer\Analyzer;
 
-use Greeflas\StaticAnalyzer\Exceptions\InvalidClassNameException;
-
 /**
- * Show count of properties and methods
  *
  * Class ClassPropMethCount
+ *
  * @author dozer111 <alkhonko@gmail.com>
  */
-final class ClassPropMethCount
+final class ClassSignatureAnalyzer
 {
     private $className;
     private $reflector;
 
 
     /**
-     * ClassPropMethCount constructor.
-     *
      * @param string $className
      *
      * @throws \ReflectionException
      */
     public function __construct(string $className)
     {
-        if (!\class_exists($className)) {
-            throw new InvalidClassNameException('className');
+        try {
+            $this->className = $className;
+            $this->reflector = new \ReflectionClass($this->className);
+        } catch (\ReflectionException $e) {
+            throw new $e('::class of <fullClassName> does not exists');
         }
-
-        $this->className = $className;
-        $this->reflector = new \ReflectionClass($this->className);
     }
 
 
